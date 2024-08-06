@@ -1,6 +1,6 @@
 # imc2024_2
 
-A new Flutter project.
+O foco desse projeto foi revisar alguns conceitos de Flutter e principalmente apresentar o widget SingleChildScrollView
 
 ## Getting Started
 
