@@ -47,17 +47,20 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: calcularIMC,
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amberAccent,),
+                  backgroundColor: Colors.amberAccent,
+                ),
                 child: const Text(
                   "Calcular",
-                  style: TextStyle(
-                    fontSize: 30,
-                  ),
+                  style: TextStyle(fontSize: 25,
+                      color: Colors.black),
                 )),
             Container(
               height: 30,
             ),
-            Text(_informacoes),
+            Text(
+              _informacoes,
+              style: TextStyle(fontSize: 20),
+            ),
           ],
         ),
       ),
