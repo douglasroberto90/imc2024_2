@@ -11,6 +11,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController controllerPeso = TextEditingController();
   TextEditingController controllerAltura = TextEditingController();
   String _informacoes = "Insira os dados e clique em calcular";
+  GlobalKey<FormState> _chaveFormulario = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,53 +22,78 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.amberAccent,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Icon(
-              Icons.person,
-              size: 200,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: TextField(
-                controller: controllerPeso,
-                decoration: const InputDecoration(label: Text("Peso(kg)")),
+        child: Form(
+          key: _chaveFormulario,
+          child: Column(
+            children: [
+              const Icon(
+                Icons.person,
+                size: 200,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: TextField(
-                controller: controllerAltura,
-                decoration: const InputDecoration(label: Text("Altura(m)")),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            ElevatedButton(
-                onPressed: calcularIMC,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amberAccent,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: controllerPeso,
+                  decoration: const InputDecoration(label: Text("Peso(kg)")),
+                  validator: (String? valor) {
+                    if (valor == null || valor.isEmpty) {
+                      return "Insira seu Peso!";
+                    }
+                    if (valor.contains(",")) {
+                      return "Insira o valor decimal usando ponto";
+                    }
+                  },
                 ),
-                child: const Text(
-                  "Calcular",
-                  style: TextStyle(fontSize: 25,
-                      color: Colors.black),
-                )),
-            Container(
-              height: 30,
-            ),
-            Text(
-              _informacoes,
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: controllerAltura,
+                  decoration: const InputDecoration(label: Text("Altura(m)")),
+                  validator: (String? valor) {
+                    if (valor == null || valor.isEmpty) {
+                      return "Insira seu Altura!";
+                    }
+                    if (valor.contains(",")) {
+                      return "Insira o valor decimal usando ponto";
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if (_chaveFormulario.currentState!.validate()) {
+                      _calcularIMC();
+                      _chaveFormulario.currentState!.reset();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amberAccent,
+                  ),
+                  child: const Text(
+                    "Calcular",
+                    style: TextStyle(fontSize: 25, color: Colors.black),
+                  )),
+              Container(
+                height: 30,
+              ),
+              Text(
+                _informacoes,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  void calcularIMC() {
+  void _calcularIMC() {
     double peso = double.parse(controllerPeso.text);
     double altura = double.parse(controllerAltura.text);
     double imc = peso / (altura * altura);
